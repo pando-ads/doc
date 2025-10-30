@@ -1,0 +1,1839 @@
+**Pando-Publisher RTB Integration**
+
+Table of Content
+
+1 Overview
+
+2 Steps for Integration
+
+3 Real Time Bid
+
+​	3.1 Data Transmission
+
+​	3.2 HTTP Request
+
+​	3.3 HTTP Response
+
+​	3.4 Display Volume and Cost Calculation
+
+4 Real Time Bid RTB Interface Parameter
+
+​ 4.1 Bid Request
+
+​ ​  4.1.1 source object
+
+​ ​ ​ 4.1.1.1 source.ext object
+
+​ ​ ​ 4.1.1.2 source.ext.schain object
+
+​ ​ ​ 4.1.1.3 source.ext.schain.nodes object
+
+​ ​  4.1.2 regs object
+
+​ ​ ​ 4.1.2.1 regs.ext object
+
+​ ​ 4.1.3 imp object
+
+​ ​ 4.1.4 metric object
+
+​ ​ 4.1.5 banner object
+
+​ ​ ​ 4.1.5.1 banner.format object
+
+​ ​ 4.1.6 video object
+
+​ ​ 4.1.7 audio object
+
+​ ​ 4.1.8 native object
+
+​ ​ ​ 4.1.8.1 native.request object
+
+​ ​ ​ 4.1.8.2 native.request.asset object
+
+​ ​ ​ 4.1.8.3 native.request.asset.title object
+
+​ ​ ​ 4.1.8.4 native.request.asset.img object
+
+​ ​ ​ 4.1.8.5 native.request.asset.video object
+
+​ ​ ​ 4.1.8.6 native.request.asset.data object
+
+​ ​ ​ 4.1.8.7 native.request.eventtrackers object
+
+​ ​ 4.1.9 pmp object
+
+​ ​ ​ 4.1.9.1 deal object
+
+​ ​ 4.1.10 site object
+
+​ ​ 4.1.11 app object
+
+​ ​ 4.1.12 publisher object
+
+​ ​ 4.1.13 content object
+
+​ ​ ​ 4.1.13.1 content.producer object
+
+​ ​ 4.1.14 imp.ext object
+
+​ ​ ​ 4.1.14.1 imp.ext.skadn object
+
+​ ​ ​ 4.1.14.2 imp.ext.skadn.skadnetlist object
+
+​ ​ 4.1.15 device object
+
+​ ​ ​ 4.1.15.1 device.ext  object
+
+​ ​ 4.1.16 geo object
+
+​ ​ 4.1.17 user object
+
+​ ​ ​ 4.1.17.1 user.data object
+
+​ ​ ​ 4.1.17.2 user.data.segment object
+
+​ ​ ​ 4.1.17.3 user.ext object
+
+
+​ 4.2 Bid Response
+
+​ ​ 4.2.1 seatbid object
+
+​ ​ 4.2.2 bid object
+
+​ ​ ​ 4.2.2.1 bid.ext object
+
+​ ​ ​ 4.2.2.2 bid.ext.skadn object
+
+​ ​ ​ 4.2.2.3 bid.ext.skadn.fidelities object
+
+​ ​ 4.2.3 native ad response
+
+​ ​ 4.2.4 Assets object
+
+​ ​ 4.2.5 title object
+
+​ ​ 4.2.6 Img object
+
+​ ​ 4.2.7 data object
+
+​ ​ 4.2.8 video object
+
+​ ​ 4.2.9 link object
+
+5 RTB Interface Enumerated Value List
+
+​	5.1 IAB Category Enumerated Value
+
+​	5.2 Banner Ad Type Enumerated Value
+
+​	5.3 Creative Attribute Enumerated Value
+
+​	5.4 Ad Position Enumerated Value
+
+​	5.5 Expandable Direction Enumerated Value
+
+​	5.6 API Frame Enumerated Value
+
+​	5.7 Video Linearity Enumerated Value
+
+​	5.8 Video Bid Response Protocol Enumerated Value
+
+​	5.9 Video Placement Types Enumerated Value
+
+​	5.10 Playback Methods Enumerated Value
+
+​	5.11 Playback Cessation Modes Enumerated Value
+
+​	5.12 Start Delay Enumerated Value
+
+​	5.13 Production Quality Enumerated Value
+
+​	5.14 Companion Types Enumerated Value
+
+​	5.15 Content Delivery Methods Enumerated Value
+
+​	5.16 Feed Types Enumerated Value
+
+​	5.17 Volume Normalization Modes Enumerated Value
+
+​	5.18 Content Context Enumerated Value
+
+​	5.19 IQG Media Ratings Enumerated Value
+
+​	5.20 Location Type Enumerated Value
+
+​	5.21 Device Type Enumerated Value
+
+​	5.22 Connection Type Enumerated Value
+
+​	5.23 IP Location Services Enumerated Value
+
+​	5.24 No-Bid Reason Codes Enumerated Value
+
+​	5.25 Loss Reason Codes Enumerated Value
+
+​	5.26 Data Asset Types Enumerated Value
+
+RTB Request Example 
+
+​	1a) native icon image request example 
+
+​	1b) native large image request example
+
+​	1c) native video image request example
+
+​    1d) banner request example
+
+​    1e) video request example
+
+RTB Response Example
+
+​	2a) native icon image response example 
+
+​	2b) native large image response example
+
+​	2c) native video image response example
+
+​    2d) banner response example
+
+​    2e) video response example
+
+
+****
+
+# 1 Overview
+
+This document provides instructions for the integration of Pando Pando system with external Publisher system. It describes the requirements and steps needed to enable interface connection based on open RTB.
+
+ 
+
+****
+
+# 2 Steps for Integration
+
+To enable Publisher to connect with Pando, the steps include:
+
+* Sign contract: Mutual agreement contract between Pando and Publisher.
+* Register Publisher account: Contact Pando Operations PIC to register Publisher account in Pando system in order to receive the token. Note: Currently Pando doesn't support auto-registration, and it is necessary to contact Pando and provide relevant information in order to complete the account registration. 
+* Proceed to system integration set-up: Publisher needs to follow this document to build interface and set up integration. If there is any issue encountered during the process, Pando will provide Product and Tech PIC to support and solve the issue accordingly. 
+* Test: After integration is set up, Publisher and Pando need to arrange testing for the integration and make adjustments when necessary.
+* Live: After test completes, Pando PIC from business team will follow up with official launch of integrated online traffic and start to record cost.
+
+ 
+
+****
+
+# 3 Real Time Bid
+
+## 3.1 Data Transmission
+
+The connection between Publisher and Pando follows HTTP communication protocol, to send Bid Request via POST mode as the content for HTTP request, and use data in JSON format.
+
+ 
+
+## 3.2 HTTP Request
+
+HTTP POST mode is used to send Bid Request, instead of HTTP GET mode, as it enables more content to be attached and supports binary data better.
+
+ 
+
+Request thread：
+
+|Name|Value|Remark|
+|:----|:----|:----|
+|x-openrtb-version|2.5|open rtb version|
+
+## 3.3 HTTP Response
+
+If Pando is participating in bid / auction, HTTP response status code should be 200, which allows it to return to Bid Request. If not, HTTP response status code should be 204.
+
+ 
+
+## 3.4 Display Volume and Cost Calculation
+
+Display / Impression volume is based on the imp. Publisher needs to ensure no repetitive reporting of each unique display.
+
+ 
+
+ 
+
+****
+
+# 4 Real Time Bid RTB Interface Parameter 
+
+## 4.1 Bid Request
+
+| **Parameter name** | **Type**     | **Required?**        | **Description**                                                                                                                                                                                                                                                                                                 |
+|:-------------------|:-------------|:---------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id                 | string       | Yes                  | The only identification for Bid Request                                                                                                                                                                                                                                                                         |
+| imp                | object array | Yes                  | 1 request can include moret than 1 impression object at a time, which represents a specific ad display placement/position. Details can be found in **imp object** parameter definition below                                                                                                                    |
+| site               | object       | Yes for site traffic | Site object info of Publisher, recommended to use only on site instead of website. Details can be found in **site object** parameter definition below                                                                                                                                                           |
+| app                | object       | Yes for app traffic  | App object info of Publisher, recommended to use only on app instead of website. Details can be found in **app object** parameter definition below                                                                                                                                                              |
+| device             | object       | Yes                  | Device info. Details can be found in **device object** parameter definition below                                                                                                                                                                                                                               |
+| user               | object       | recommended          | Device user / Ad audience. Details can be found in **user object** parameter definition below                                                                                                                                                                                                                   |
+| test               | integer      | No                   | Indicator of test mode in which auctions are not billable,where 0 = live mode, 1 = test mode  ,default 0                                                                                                                                                                                                        |
+| at                 | integer      | No                   | Bid settlement auction type. Value of 1 means it follows First-price auction, while value of 2 means it follows Second-price plus auction, default 2                                                                                                                                                            |
+| tmax               | integer      | Yes                  | Maximum time in milliseconds the exchange allows for bids to be received including Internet latency to avoid timeout                                                                                                                                                                                            |
+| wseat              | string array | No                   | White list of buyer seats (e.g., advertisers, agencies) allowed to bid on this impression.                                                                                                                                                                                                                      |
+| bseat              | string array | No                   | Block list of buyer seats (e.g., advertisers, agencies) restricted from bidding on this impression.                                                                                                                                                                                                             |
+| allimps            | integer      | No                   | Flag to indicate if Exchange can verify that the impressions offered represent all of the impressions available in context(e.g., all on the web page, all video spots such as pre/mid/post roll) to support road-blocking. 0 = no or unknown, 1 = yes, the impressions offered represent all that are available |
+| cur                | string array | No                   | Array of allowed currencies for bids on this bid request using ISO-4217 alpha codes. Recommended only if the exchange accepts multiple currencies.                                                                                                                                                              |
+| walng              | string array | No                   | White list of languages for creatives using ISO-639-1-alpha-2.                                                                                                                                                                                                                                                  |
+| bcat               | string array | No                   | Blocked advertiser categories using the IAB content categories. Refer to List 5.1.                                                                                                                                                                                                                              |
+| badv               | string array | No                   | Domain name in blacklist                                                                                                                                                                                                                                                                                        |
+| bapp               | string array | No                   | App name in blacklist.On Android, these should be bundle or package names (e.g., com.foo.mygame). On iOS, these are numeric IDs.                                                                                                                                                                                |
+| source             | object       | No                   | A Sorce object that provides data about theinventory source. Details can be found in **source object** parameter definition below                                                                                                                                                                               |
+| regs               | object       | No                   | Any industry, legal, or governmental regulations in force                                                                                                                                                                                                                                                       |
+| ext                | object       | No                   | Placeholder for exchange-specific extensions to OpenRTB                                                                                                                                                                                                                                                         |
+
+ 
+
+****
+
+ 
+
+### 4.1.1 source object
+
+| **Parameter name** | **Type**   | **Required?** | **Description**                                                                                                                   |
+|:-------------------|:-----------|:--------------|:----------------------------------------------------------------------------------------------------------------------------------|
+| fd                 | integer    | No            | Entity responsible for the final impression sale decision, where0 = exchange, 1 = upstream source                                 |
+| tid                | string     | No            | Transaction ID that must be common across all participants in this bid request (e.g., potentially multiple exchanges)             |
+| pchain             | string     | No            | Payment ID chain string containing embedded syntax described in the TAG Payment ID Protocol v1.0                                  |
+| ext                | object     | No            | Placeholder for exchange-specific extensions to OpenRTB. Details can be found in **source.ext object** parameter definition below |
+
+ 
+
+#### 4.1.1.1 source.ext object
+
+| **Parameter name**      | **Type**    | **Required?**     | **Description**                                                                                                                                                                                                                |
+|:--------------|:----------|:-------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| schain        | object    | recommended  | The object of SupplyChain. The SupplyChain object enables buyers to see all parties who are selling or reselling a given bid request. Details can be found in **source.ext.schain object** parameter definition below |
+| omidpn        | string    | No           | Identifier of the OM SDK integration. This is the same as the "name" parameter of the OMID Partner object.                                                                                                            |
+| omidpv        | string    | No           | Identifier of the OM SDK integration. This is the same as the "name" parameter of the OMID Partner object.                                                                                                            |
+
+ 
+
+#### 4.1.1.2 source.ext.schain object
+
+| **Parameter name**          | **Type**      | **Required?**            | **Description**                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|:------------------|:------------|:--------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| complete          | integer     | Yes                 | Flag indicating whether the chain contains all nodesinvolved in the transaction leading back to the owner of the site, app or other medium of the inventory, where 0 = no, 1= yes.                                                                                                                                                                                                                                                                                      |
+| nodes             | object      | Yes                 | Array of SupplyChainNode objects in the order of thechain. In a complete supply chain, the first node represents theinitial advertising system and seller ID involved in thetransaction, i.e. the owner of the site, app, or other medium.In an incomplete supply chain, it represents the first known node. The last node represents the entity sending this bid request. Details can be found in **source.ext.schain.nodes object object** parameter definition below |
+| ver               | string      | Yes                 | Protocol version. Ver 1.0 supported.                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ext               | object      | No                  | Placeholder for exchange-specific extensions to OpenRTB                                                                                                                                                                                                                                                                                                                                                                                                                 |
+
+ 
+
+#### 4.1.1.3 source.ext.schain.nodes object
+
+| **Parameter name**          | **Type**      | **Required?** | **Description**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|:------------------|:------------|:---------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| asi               | string      | Yes      | The canonical domain name of the SSP, Exchange, Header Wrapper, etc system that bidders connect to. Thismay be  the operational domain of the system,if that is differentthan the parent corporate domain, to facilitate WHOISand reverse IP lookups to establish clear ownership of thedelegate system. This should be the same value as used to identify sellers in an ads.txtfile if one exists.                                                                                                                                                                                                                                                                                                                          |
+| sid               | string      | Yes      | The identifier associated with the seller or reseller account    within the advertising system. This must contain the same    value used in transactions (i.e. OpenRTB bid requests) in the field specified by the SSP/exchange. Typically, in OpenRTB,   this is publisher.id. For OpenDirect it is typically thepublisher’s organization ID.Should be limited to 64 characters in length.                                                                                                                                                                                                                                                                                                                                  |
+| rid               | string      | No       | The OpenRTB RequestId of the request as issued by this seller.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| name              | string      | No       | The name of the company (the legal entity) that is paid for  inventory transacted under the given seller_id. This value isoptional and should NOT be included if it exists in theadvertising system’s sellers.json file.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| domain            | string      | No       | The business domain name of the entity represented by this node. This value is optional and should NOT be includedif   it exists in the advertising system’s sellers.json file.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| hp                | string      | No       | Indicates whether this node will be involved in the flow of   payment for the inventory. When set to 1, the advertising   system in the asifield pays the seller in thesid field, who isresponsible for paying the previous node inthe chain.When set to 0, this node is not involved in the flow ofpayment for the inventory. For version 1.0 of SupplyChain, this property should always be 1. It is explicitly required to be included as it is expected that future versions of thespecification will introduce non-payment handling nodes.Implementers should ensure that they support this field andpropagate it onwards when constructing SupplyChainobjects in bid requests sent to a downstream advertising system. |
+| ext               | object      | No       | Placeholder for exchange-specific extensions to OpenRTB                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+
+ 
+
+****
+
+ 
+
+### 4.1.2 regs object
+
+| **Parameter name** | **Type**   | **Required?**         | **Description**                                                                                                                                                    |
+|:-------------------|:-----------|:----------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| coppa              | integer    | Yes                   | Flag indicating if this request is subject to the COPPA regulations established by the USA FTC, where 0 = no, 1 = yes. Refer to Section 7.5 for more information   |
+| ext                | object     | No                    | Placeholder for exchange-specific extensions to OpenRTB.Details can be found in **regs Extension object** parameter definition below                               |
+
+ 
+
+#### 4.1.2.1 regs.ext object
+
+| **Parameter name** | **Type** | **Required?** | **Description**                                                                         |
+|:-------------------|:---------|:--------------|:----------------------------------------------------------------------------------------|
+| gdpr               | integer  | No            | Indicates whether the request falls under GDPR regulations:0 = No,1 = Yes               |
+| us_privacy         | string   | No            | Passes the user privacy status for requests which fall under CCPA regulations.          |
+
+ 
+
+****
+
+ 
+
+### 4.1.3 imp object
+
+| **Parameter name**         | **Type**      | **Required?**               | **Description**                                                                                                                                                                                                              |
+|:---------------------------|:--------------|:----------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id                         | string        | Yes                         | The only identification in a Bid Request for the specific display traffic sold.                                                                                                                                              |
+| metric                     | object array  | No                          | An array of Metric object. Details can be found in **metric object** parameter definition below                                                                                                                              |
+| banner                     | object        | Yes for Banner traffic      | Refer to **banner object**                                                                                                                                                                                                   |
+| video                      | object        | Yes for Video traffic       | Refer to **video object**                                                                                                                                                                                                    |
+| audio                      | object        | Yes for Audio traffic       | Refer to **audio object**                                                                                                                                                                                                    |
+| native                     | object        | Yes for Native traffic      | Refer to **native object**                                                                                                                                                                                                   |
+| pmp                        | object        | Yes for private marketplace | A Pmp object containing any privatemarketplace deals in effect for this impression.  Details can be found in **pmp object** parameter definition below                                                                       |
+| displaymanager             | string        | Yes                         | Name of ad mediation partner, SDK technology, or player responsible for rendering ad (typically video or mobile). Used by some ad servers to customize ad code by partner. Recommended for video and/or apps                 |
+| displaymanagerver          | string        | Yes                         | Version of ad mediation partner, SDK technology, or player responsible for rendering ad (typically video or mobile). Used by some ad servers to customize ad code by partner. Recommended for video and/or apps              |
+| instl                      | integer       | No                          | 1 = the ad is interstitial or full screen, 0 = not interstitial                                                                                                                                                              |
+| tagid                      | string        | Yes                         | Fixed identification of each specific ad display placement/position                                                                                                                                                          |
+| bidfloor                   | float         | Yes                         | Minimum CPM bid price for this display traffic  , default 0                                                                                                                                                                  |
+| bidfloorcur                | string        | Yes                         | Bid price currency, default "USD"                                                                                                                                                                                            |
+| clickbrowser               | integer       | No                          | Indicates the type of browser opened upon clicking the creative in an app, where 0 = embedded, 1 = native                                                                                                                    |
+| secure                     | integer       | No                          | Parameter to indicate if Bid Request needs HTTPS encrypted info and markup to ensure data privacy.Value of 0 means it doesn't need. Value of 1 means it needs. If left blank, means unknown, i.e. it doesn't need encryption |
+| iframebuster               | string array  | No                          | Array of exchange-specific names of supported iframe busters                                                                                                                                                                 |
+| exp                        | integer       | No                          | Duration that may elapse between the auction and the actual display / impression.Unit is in seconds                                                                                                                          |
+| ext                        | object        | No                          | Placeholder for exchange-specific extensions to OpenRTB                                                                                                                                                                      |
+
+ 
+
+****
+
+ 
+
+### 4.1.4 metric object
+
+| **Parameter name** | **Type**      | **Required?** | **Description**                                                                                                                                                                             |
+|:-------------------|:--------------|:--------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| type               | string        | No            | Type of metric being presented using exchange curated string names which should be published to bidders a priori                                                                            |
+| value              | float         | No            | Number representing the value of the metric. Probabilities must be in the range 0.0 – 1.0                                                                                                   |
+| vendor             | string        | No            | Source of the value using exchange curated string names which should be published to bidders a priori. If the exchange itself is the source versus a third party, “EXCHANGE” is recommended |
+| ext                | object        | No            | Placeholder for exchange-specific extensions to OpenRTB                                                                                                                                     |
+
+ 
+
+****
+
+ 
+
+### 4.1.5 banner object
+
+| **Parameter name** | **Type**       | **Required?** | **Description**                                                                                                                                                                                                                                |
+|:-------------------|:---------------|:--------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| format             | object array   | No            | Array of format objects (Section 3.2.10) representing the banner sizes permitted. If none are specified, then use of the h and w attributes is highly recommended. Refer to **format object**                                                  |
+| w                  | integer        | Yes           | Exact width in device independent pixels (DIPS); If not specified wmin and wmax , this value refers to the required display width, otherwise refers to the desired width                                                                       |
+| h                  | integer        | Yes           | Exact height in device independent pixels (DIPS); If not specified hmin and hmax , this value refers to the required display height, otherwise refers to the desired height                                                                    |
+| wmax               | integer        | No            | Deprecated in favor of the format array. Maximum width in device independent pixels (DIPS)                                                                                                                                                     |
+| hmax               | integer        | No            | Deprecated in favor of the format array. Maximum height in device independent pixels (DIPS)                                                                                                                                                    |
+| wmin               | integer        | No            | Deprecated in favor of the format array. Minimum width in device independent pixels (DIPS)                                                                                                                                                     |
+| hmin               | integer        | No            | Deprecated in favor of the format array. Minimum height in device independent pixels (DIPS)                                                                                                                                                    |
+| btype              | integer array  | No            | Blocked banner ad types. Refer to List 5.2.                                                                                                                                                                                                    |
+| battr              | integer array  | No            | Blocked creative attributes. Refer to List 5.3.                                                                                                                                                                                                |
+| pos                | integer        | No            | Ad position on screen. Refer to List 5.4.                                                                                                                                                                                                      |
+| mimes              | string array   | Yes           | Content MIME types supported. Popular MIME types may include "application/x-shockwave-flash", “image/jpg”, and “image/gif”                                                                                                                     |
+| topframe           | integer        | No            | Indicates if the banner is in the top frame as opposed to an iframe, where 0 = no, 1 = yes                                                                                                                                                     |
+| expdir             | integer array  | No            | Directions in which the banner may expand. Refer to List 5.5                                                                                                                                                                                   |
+| api                | integer array  | No            | List of supported API frameworks for this impression. Refer to List 5.6. If an API is not explicitly listed, it is assumed not to be supported                                                                                                 |
+| id                 | string         | No            | Unique identifier for this banner object. Recommended when Banner objects are used with a Video object to represent an array of companion ads. Values usually start at 1 and increase with each object; should be unique within an impression. |
+| vcm                | integer        | No            | Relevant only for Banner objects used with a Video object in an array of companion ads. Indicates the companion banner rendering mode relative to the associated video, where 0 = concurrent, 1 = end-card                                     |
+| ext                | object         | No            | Placeholder for exchange-specific extensions to OpenRTB                                                                                                                                                                                        |
+
+ 
+
+#### 4.1.5.1 banner.format object
+
+| **Parameter name** | **Type**       | **Required?**   | **Description**                                                                                                                                                             |
+|:-------------------|:---------------|:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| w                  | integer        | Yes             | Exact width in device independent pixels (DIPS); If not specified wmin and wmax , this value refers to the required display width, otherwise refers to the desired width    |
+| h                  | integer        | Yes             | Exact height in device independent pixels (DIPS); If not specified hmin and hmax , this value refers to the required display height, otherwise refers to the desired height |
+| wratio             | integer        | No              | Relative width when expressing size as a ratio                                                                                                                              |
+| hratio             | integer        | No              | Relative height when expressing size as a ratio                                                                                                                             |
+| wmin               | integer        | No              | The minimum width in device independent pixels (DIPS) at which the ad will be displayed the size is expressed as a ratio                                                    |
+| ext                | object         | No              | Placeholder for exchange-specific extensions to OpenRTB                                                                                                                     |
+
+ 
+
+****
+
+ 
+
+### 4.1.6 video object
+
+| **Parameter name** | **Type**      | **Required?** | **Description**                                                                                                                                                                                                                                                                            |
+|:-------------------|:--------------|:--------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| mimes              | string array  | Yes           | Supported content mime-type. Currently it only supports ‘video/mp4’                                                                                                                                                                                                                        |
+| minduration        | integer       | recommended   | Minimum video ad length. Unit is in seconds                                                                                                                                                                                                                                                |
+| maxduration        | integer       | recommended   | Maximum video ad length. Unit is in seconds                                                                                                                                                                                                                                                |
+| protocols          | integer array | recommended   | Applicable video protocol for Publisher in Bid Response.   Refer to List 5.8.                                                                                                                                                                                                              |
+| protocol           | integer       | DEPRECATED    | Applicable video protocol for Publisher in Bid Response. Refer to List 5.8.                                                                                                                                                                                                                |
+| w                  | integer       | Yes           | Width of the video player in device independent pixels (DIPS)                                                                                                                                                                                                                              |
+| h                  | integer       | Yes           | Height of the video player in device independent pixels (DIPS)                                                                                                                                                                                                                             |
+| startdelay         | integer       | No            | Indicates the start delay in seconds for pre-roll, mid-roll, or post-roll ad placements. Refer to List 5.12 for additional generic values                                                                                                                                                  |
+| placement          | integer       | No            | Placement type for the impression. Refer to List 5.9                                                                                                                                                                                                                                       |
+| linearity          | integer       | No            | Indicates if the impression must be linear, nonlinear, etc. If none specified, assume all are allowed. Refer to List 5.7                                                                                                                                                                   |
+| skip               | integer       | No            | Indicates if the player will allow the video to be skipped, where 0 = no, 1 = yes. If a bidder sends markup/creative that is itself skippable, the Bid object should include the attr array with an element of 16 indicating skippable video. Refer to List 5.3                            |
+| skipmin            | integer       | No            | Videos of total duration greater than this number of seconds can be skippable; only applicable if the ad is skippable                                                                                                                                                                      |
+| skipafter          | integer       | No            | Number of seconds a video must play before skipping is enabled; only applicable if the ad is skippable                                                                                                                                                                                     |
+| sequence           | integer       | No            | If multiple ad impressions are offered in the same bid request, the sequence number will allow for the coordinated delivery of multiple creatives                                                                                                                                          |
+| battr              | integer array | No            | Blocked creative attributes. Refer to List 5.3                                                                                                                                                                                                                                             |
+| maxextended        | integer       | No            | Maximum extended ad duration if extension is allowed. If blank or 0, extension is not allowed. If -1, extension is allowed, and there is no time limit imposed. If greater than 0, then the value represents the number of seconds of extended play supported beyond the maxduration value |
+| minbitrate         | integer       | No            | Minimum bit rate in Kbps                                                                                                                                                                                                                                                                   |
+| maxbitrate         | integer       | No            | Maximum bit rate in Kbps                                                                                                                                                                                                                                                                   |
+| boxingallowed      | integer       | No            | Indicates if letter-boxing of 4:3 content into a 16:9 window is allowed, where 0 = no, 1 = yes                                                                                                                                                                                             |
+| playbackmethod     | integer array | No            | Playback methods that may be in use. If none are specified, any method may be used. Refer to List 5.10                                                                                                                                                                                     |
+| playbackend        | integer       | No            | The event that causes playback to end. Refer to List 5.11                                                                                                                                                                                                                                  |
+| pos                | integer       | No            | Ad position on screen. Refer to List 5.4                                                                                                                                                                                                                                                   |
+| delivery           | integer array | No            | Supported delivery methods (e.g., streaming, progressive). If none specified, assume all are supported. Refer to List 5.15                                                                                                                                                                 |
+| companionad        | object array  | No            | Array of Banner objects if companion ads are available                                                                                                                                                                                                                                     |
+| api                | integer array | No            | List of supported API frameworks for this impression. Refer to List 5.6. If an API is not explicitly listed, it is assumed not to be supported                                                                                                                                             |
+| companiontype      | integer array | No            | Supported VAST companion ad types. Refer to List 5.14. Recommended if companion Banner objects are included via the companionad array                                                                                                                                                      |
+| ext                | object        | No            | Placeholder for exchange-specific extensions to OpenRTB                                                                                                                                                                                                                                    |
+
+ 
+
+****
+
+ 
+
+### 4.1.7 audio object
+
+| **Parameter name**  | **Type**       | **Required?** | **Description**                                                                                                                                                                                                                                                                                        |
+|:--------------------|:---------------|:--------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| mimes               | string array   | Yes           | Supported content mime-type. Currently it only supports “audio/ mp4”                                                                                                                                                                                                                                   |
+| minduration         | integer        | recommended   | Minimum audio ad length. Unit is in seconds                                                                                                                                                                                                                                                            |
+| maxduration         | integer        | recommended   | Maximum audio ad length. Unit is in seconds                                                                                                                                                                                                                                                            |
+| protocols           | integer array  | recommended   | Applicable audio protocol for Publisher in Bid Response.   Refer to List 5.8.                                                                                                                                                                                                                          |
+| protocol            | integer        | DEPRECATED    | Applicable audio protocol for Publisher in Bid Response. Refer to List 5.8.                                                                                                                                                                                                                            |
+| startdelay          | integer        | No            | Indicates the start delay in seconds for pre-roll, mid-roll, or post-roll ad placements. Refer to List 5.12 for additional generic values                                                                                                                                                              |
+| sequence            | integer        | No            | If multiple ad impressions are offered in the same bid request, the sequence number will allow for the coordinated delivery of multiple creatives                                                                                                                                                      |
+| battr               | integer array  | No            | Blocked creative attributes. Refer to List 5.3                                                                                                                                                                                                                                                         |
+| maxextended         | integer        | No            | Maximum extended ad duration if extension is allowed. If blank or 0, extension is not allowed. If -1, extension is allowed, and there is no time limit imposed. If greater than 0, then the value represents the number of seconds of extended play supported beyond the maxduration value             |
+| minbitrate          | integer        | No            | Minimum bit rate in Kbps                                                                                                                                                                                                                                                                               |
+| maxbitrate          | integer        | No            | Maximum bit rate in Kbps                                                                                                                                                                                                                                                                               |
+| delivery            | integer array  | No            | Supported delivery methods (e.g., streaming, progressive). If none specified, assume all are supported. Refer to List 5.15                                                                                                                                                                             |
+| companionad         | object array   | No            | Array of Banner objects if companion ads are available                                                                                                                                                                                                                                                 |
+| api                 | integer array  | No            | List of supported API frameworks for this impression. Refer to List 5.6. If an API is not explicitly listed, it is assumed not to be supported                                                                                                                                                         |
+| companiontype       | integer array  | No            | Supported DAAST companion ad types. Refer to List 5.14. Recommended if companion Banner objects are included via the companionad array                                                                                                                                                                 |
+| maxseq              | integer        | No            | The maximum number of ads that can be played in an ad pod                                                                                                                                                                                                                                              |
+| feed                | integer        | No            | Type of audio feed. Refer to List 5.16                                                                                                                                                                                                                                                                 |
+| stitched            | integer        | No            | Indicates if the ad is stitched with audio content or delivered independently, where 0 = no, 1 = yes                                                                                                                                                                                                   |
+| nvol                | integer        | No            | Volume normalization mode. Refer to List 5.17                                                                                                                                                                                                                                                          |
+| ext                 | object         | No            | Placeholder for exchange-specific extensions to OpenRTB                                                                                                                                                                                                                                                |
+
+ 
+
+****
+
+ 
+
+### 4.1.8 native object
+
+| **Parameter name**  | **Type**      | **Required?** | **Description**                                                                                                                                                                                              |
+|:--------------------|:--------------|:--------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| request             | string        | Yes           | Request must follow Native ad specification. Refer to **native.request object** for details                                                                                                                  |
+| ver                 | string        | Yes           | Use Dynamic Native Ads API version, default version is 1.0                                                                                                                                                   |
+| api                 | integer array | No            | Supported API frame of the display. Section **5.6 API frame** is the reference of its enumerated values. Default setting of this parameter is that it doesn't support any enumerated value, unless specified |
+| battr               | integer array | No            | Restrictions of material attributes. Section **5.3 Creative attribute list** is the reference of its enumerated values                                                                                       |
+| ext                 | object        | No            | Placeholder for exchange-specific extensions to OpenRTB                                                                                                                                                      |
+
+ 
+
+#### 4.1.8.1 native.request object
+
+| **Parameter name** | **Type**       | **Required?** | **Description**                                                                                                                                                                  |
+|:-------------------|:---------------|:--------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| assets             | object array   | Yes           | Use **native.request.asset object** to show the requirement of Native ad for assets and other elements. All assets and other elements should follow this request object          |
+| ver                | string         | Yes           | Native Markup version, default version is 1.0                                                                                                                                    |
+| context            | integer        | recommended   | The context in which the ad appears. See Table of Context IDs for a list of supported context types.                                                                             |
+| contextsubtype     | integer        | No            | A more detailed context in which the ad appears. See Table of Context SubType IDs below for a list of supported context subtypes.                                                |
+| plcmttype          | integer        | recommended   | The design/format/layout of the ad unit being offered. See Table of Placement Type IDs for a list of supported placement types.                                                  |
+| aurlsupport        | integer        | No            | Whether the supply source / impression supports returning an assetsurl instead of an asset object. 0 or the absence of the field indicates no such support.                      |
+| durlsupport        | integer        | No            | Whether the supply source / impression supports returning a dco url instead of an asset object. 0 or the absence of the field indicates no such support. Beta feature.           |
+| eventtrackers      | object array   | No            | Specifies what type of eventtracking is supported. Refer to **native.request.eventtrackers object** for details                                                                  |
+| privacy            | integer        | recommended   | Set to 1 when the native ad supports buyer-specific privacy notice. Set to 0 (or field absent) when the native ad doesn’t support custom privacy links or if support is unknown. |
+| ext                | object         | No            | Placeholder for exchange-specific extensions to OpenRTB                                                                                                                          |
+
+ 
+
+#### 4.1.8.2 native.request.asset object
+
+| **Parameter name** | **Type**     | **Required?** | **Description**                                                                                                                                                  |
+|:-------------------|:-------------|:--------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| assets             | object array | Yes           | Use **asset request object** to show the requirement of Native ad for assets and other elements. All assets and other elements should follow this request object |
+| ver                | string       | Yes           | Native Markup version, default version is 1.0                                                                                                                    |
+
+ 
+
+#### 4.1.8.3 native.request.asset.title object
+| **Parameter name** | **Type** | **Required?** | **Description**                                                               |
+|:-------------------|:---------|:--------------|:----------------------------------------------------------- -------------------|
+| title              | object   | No            | Title object for title assets. Refer to **title object**                                                                                                   |
+| img                | object   | No            | Image object for image assets. Refer to **img object**                                                                                                     |
+| video              | object   | No            | Video object for video assets. Refer to **video object**                                                                                                   |
+| data               | object   | No            | Data object for data assets, eg. brand, description, rating, pricing etc.Refer to **data object**                                                          |
+
+ 
+
+#### 4.1.8.4 native.request.asset.img object
+
+| **Parameter name** | **Type**     | **Required?** | **Description**                                                                    |
+|:-------------------|:-------------|:--------------|:-----------------------------------------------------------------------------------|
+| type               | integer      | Yes           | Indicate the specific type of image. Icon image: Value = 1 Large image: Value = 3  |
+| w                  | integer      | No            | Image width                                                                        |
+| wmin               | integer      | Yes           | Minimum image width. Unit is in pixels                                             |
+| h                  | integer      | No            | Image height / length                                                              |
+| hmin               | integer      | Yes           | Minimum image height / length. Unit is in pixels                                   |
+| mimes              | string array | No            | Supported image mime-type, including but not limited to ‘image/jpg’and ‘image/gif’ |
+
+ 
+
+#### 4.1.8.5 native.request.asset.video object
+
+| **Parameter name** | **Type**      | **Required?** | **Description**                                                           |
+|:-------------------|:--------------|:--------------|:--------------------------------------------------------------------------|
+| mimes              | string array  | Yes           | Supported content mime-type                                               |
+| minduration        | integer       | Yes           | Minimum video ad length. Unit is in seconds                               |
+| maxduration        | integer       | Yes           | Maximum video ad length. Unit is in seconds                               |
+| protocols          | integer array | Yes           | Applicable video protocol for Publisher in Bid Response.Refer to List 5.8 |
+
+ 
+
+#### 4.1.8.6 native.request.asset.data object
+
+| **Parameter name** | **Type**     | **Required?** | **Description**                                                                                                                                |
+|:-------------------|:-------------|:--------------|:-----------------------------------------------------------------------------------------------------------------------------------------------|
+| type               | string array | Yes           | Indicate data object type ID. Each data object has a specific type. Section **5.12 Data Asset Type** is the reference of its enumerated values |
+| len                | integer      | Yes           | Maximum number of characters allowed                                                                                                           |
+
+ 
+
+#### 4.1.8.7 native.request.eventtrackers object
+
+| **Parameter name**    | **Type**        | **Required?** | **Description**                                                                                          |
+|:------------|:--------------|:---------|:------------------------------------------------------------------------------------------------|
+| event       | integer       | Yes      | Type of event available for tracking. See Event Types table.                                    |
+| methods     | integer array | Yes      | Array of the types of tracking available for the given event. See Event Tracking Methods table. |
+| ext         | object        | No       | Placeholder for exchange-specific extensions to OpenRTB                                         |
+
+ 
+
+****
+
+ 
+
+### 4.1.9 pmp object
+
+| **Parameter name** | **Type**        | **Required?** | **Description**                                                                                                                                                                                |
+|:-------------------|:----------------|:--------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| private_auction    | integer         | No            | Indicator of auction eligibility to seats named in the Direct Deals object, where 0 = all bids are accepted, 1 = bids are restricted to the deals specified and the terms thereof. default 0   |
+| deals              | object array    | No            | Array of Deal objects that convey the specific deals applicable to this impression. Refer to **deal object**                                                                                   |
+| ext                | object          | No            | Placeholder for exchange-specific extensions to OpenRTB                                                                                                                                        |
+
+ 
+
+#### 4.1.9.1 deal object
+
+| **Parameter name** | **Type**      | **Required?** | **Description**                                                                                                                                                                 |
+|:-------------------|:--------------|:--------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id                 | string        | Yes           | A unique identifier for the direct deal                                                                                                                                         |
+| bidfloor           | float         | No            | Minimum CPM bid price for this display traffic ，default 0                                                                                                                       |
+| bidfloorcur        | string        | No            | Bid price currency  ,default "USD"                                                                                                                                              |
+| at                 | integer       | Yes           | Optional override of the overall auction type of the bid request, where 1 = First Price, 2 = Second Price Plus, 3 = the value passed in bidfloor is the agreed upon deal price. |
+| wseat              | string array  | No            | Whitelist of buyer seats (e.g., advertisers, agencies) allowed to bid on this deal.                                                                                             |
+| wadomain           | string array  | No            | Array of advertiser domains (e.g., advertiser.com) allowed to bid on this deal                                                                                                  || ext                        | object        | No            | Placeholder for exchange-specific extensions to OpenRTB                                                                                                                                                                                    |
+| ext                | object        | No            | Placeholder for exchange-specific extensions to OpenRTB                                                                                                                         |
+
+ 
+
+****
+
+ 
+
+### 4.1.10 site object
+
+| **Parameter name** | **Type**        | **Required?** | **Description**                                                                                                   |
+|:-------------------|:----------------|:--------------|:------------------------------------------------------------------------------------------------------------------|
+| id                 | string          | recommended   | Exchange definition of Site ID                                                                                    |
+| name               | string          | No            | Site name                                                                                                         |
+| domain             | string          | No            | Domain of the site (e.g., “mysite.foo.com”)                                                                       |
+| cat                | string array    | No            | Array of IAB content categories of the site. Refer to List 5.1                                                    |
+| sectioncat         | string array    | No            | Array of IAB content categories that describe the currentsection of the site. Refer to List 5.1                   |
+| pagecat            | string array    | No            | Array of IAB content categories that describe the current page or view of the site. Refer to List 5.1             |
+| page               | string          | No            | URL of the page where the impression will be shown                                                                |
+| ref                | string          | No            | Referrer URL that caused navigation to the current page                                                           |
+| search             | string          | No            | Search string that caused navigation to the current page                                                          |
+| mobile             | integer         | No            | Indicates if the site has been programmed to optimize layout when viewed on mobile devices, where 0 = no, 1 = yes |
+| privacypolicy      | integer         | recommended   | Indicates if the site has a privacy policy, where 0 = no, 1 = yes                                                 |
+| publisher          | object          | No            | Details about the Publisher of the site. Refer to **publisher object**                                            |
+| content            | object          | No            | Details about the Content within the site. Refer to **content object**                                            |
+| keywords           | string          | No            | Comma separated list of keywords about the site                                                                   |
+| ext                | object          | No            | Placeholder for exchange-specific extensions to OpenRTB                                                           |
+
+ 
+
+****
+
+ 
+
+### 4.1.11 app object
+
+| **Parameter name** | **Type**       | **Required?** | **Description**                                                                                       |
+|:-------------------|:---------------|:--------------|:------------------------------------------------------------------------------------------------------|
+| id                 | string         | recommended   | Exchange  definition of App ID                                                                        |
+| name               | string         | No            | App name                                                                                              |
+| bundle             | string         | Yes           | App package name info                                                                                 |
+| domain             | string         | recommended   | App domain name, eg. mygame.foo.com                                                                   |
+| storeurl           | string         | recommended   | App store URL for an installed app; for IQG 2.1 compliance                                            |
+| cat                | string array   | recommended   | App IAB category.Section **5.1 IAB category** is the reference of its enumerated values               |
+| sectioncat         | string array   | No            | Array of IAB content categories that describe the currentsection of the site. Refer to List 5.1       |
+| pagecat            | string array   | No            | Array of IAB content categories that describe the current page or view of the site. Refer to List 5.1 |
+| ver                | string         | Yes           | App version                                                                                           |
+| privacypolicy      | integer        | recommended   | Indicates if the app has a privacy policy, where 0 = no, 1 = yes                                      |
+| publisher          | object         | recommended   | Details about the Publisher of the app. Refer to **publisher object**                                 |
+| paid               | integer        | No            | 0 = app is free, 1 = the app is a paid version.                                                       |
+| content            | object         | No            | Details about the Content within the app. Refer to **content object**                                 |
+| keywords           | string         | No            | Comma separated list of keywords about the app                                                        |
+| ext                | object         | No            | Placeholder for exchange-specific extensions to OpenRTB                                               |
+
+ 
+
+****
+
+ 
+
+### 4.1.12 publisher object
+
+| **Parameter name** | **Type**       | **Required?** | **Description**                                                                         |
+|:-------------------|:---------------|:--------------|:----------------------------------------------------------------------------------------|
+| id                 | string         | Yes           | Publisher ID, to apply for token info                                                   |
+| name               | string         | recommended   | Publisher name                                                                          |
+| domain             | string         | No            | Publisher's highest domain name, eg. ‘publisher.com’                                    |
+| cat                | string array   | recommended   | Array of IAB content categories that describe the publisher.Refer to List 5.1           |
+| ext                | object         | No            | Placeholder for exchange-specific extensions to OpenRTB                                 |
+
+ 
+
+****
+
+ 
+
+### 4.1.13 content object
+
+| **Parameter name**  | **Type**      | **Required?** | **Description**                                                                                                |
+|:--------------------|:--------------|:--------------|:---------------------------------------------------------------------------------------------------------------|
+| id                  | string        | No            | ID uniquely identifying the content                                                                            |
+| episode             | integer       | No            | Episode number                                                                                                 |
+| title               | string        | No            | Content title                                                                                                  |
+| series              | string        | No            | Content series                                                                                                 |
+| season              | string        | No            | Content season (e.g., “Season 3”)                                                                              |
+| artist              | string        | No            | Artist credited with the content                                                                               |
+| genre               | string        | No            | Genre that best describes the content (e.g., rock, pop, etc)                                                   |
+| album               | string        | No            | Album to which the content belongs; typically for audio                                                        |
+| isrc                | string        | No            | International Standard Recording Code conforming to ISO3901                                                    |
+| producer            | object        | No            | Details about the content Producer. Refer to **producer object**                                               |
+| url                 | string        | No            | URL of the content, for buy-side contextualization or review                                                   |                                        |
+| cat                 | string array  | No            | Array of IAB content categories that describe the content producer. Refer to List 5.1                          |
+| prodq               | integer       | No            | Production quality. Refer to List 5.13                                                                         |
+| videoquality        | integer       | DEPRECATED    | Deprecated in favor of prodq. Video quality. Refer to List 5.13                                                |
+| context             | integer       | No            | Type of content (game, video, text, etc.). Refer to List 5.18                                                  |
+| contentrating       | string        | No            | Content rating (e.g., MPAA)                                                                                    |
+| userrating          | string        | No            | User rating of the content (e.g., number of stars, likes, etc.)                                                |
+| qagmediarating      | integer       | No            | Media rating per IQG guidelines. Refer to List 5.19                                                            |
+| keywords            | string        | No            | Comma separated list of keywords describing the content                                                        |
+| livestream          | integer       | No            | 0 = not live, 1 = content is live (e.g., stream, live blog)                                                    |
+| sourcerelationship  | integer       | No            | 0 = indirect, 1 = direct                                                                                       |
+| len                 | integer       | No            | Length of content in seconds; appropriate for video or audio                                                   |
+| language            | string        | No            | Content language using ISO-639-1-alpha-2                                                                       | 
+| embeddable          | integer       | No            | Indicator of whether or not the content is embeddable (e.g.,an embeddable video player), where 0 = no, 1 = yes |
+| data                | object array  | No            | Additional content data.  Refer to **data object**                                                             |
+| ext                 | object        | No            | Placeholder for exchange-specific extensions to OpenRTB                                                        |
+
+ 
+
+#### 4.1.13.1 content.producer object
+
+| **Parameter name** | **Type**       | **Required?**   | **Description**                                                                        |
+|:-------------------|:---------------|:----------------|:---------------------------------------------------------------------------------------|
+| id                 | string         | Yes             | Content producer or originator ID                                                      |
+| name               | string         | No              | Content producer or originator name (e.g., “Warner Bros”)                              |
+| domain             | string         | No              | Highest level domain of the content producer (e.g., “producer.com”)                    |
+| cat                | string array   | No              | Array of IAB content categories that describe the content producer. Refer to List 5.1. |
+| ext                | object         | No              | Placeholder for exchange-specific extensions to OpenRTB                                |
+
+ 
+
+****
+
+ 
+
+### 4.1.14 imp.ext object
+
+| **Parameter name**         | **Type**      | **Required?**  | **Description**                                                                             |
+|:-----------------|:------------|:----------|:-----------------------------------------------------------------------------------|
+| deeplink         | integer     | No        | Flag to indicate if deeplink is supported, where 0 = not supported, 1 = supported. |
+| skadn            | object      | No        | Apple iOS 14 SkAdNetwork related data ,information for creating a signature.       |
+| rewarded         | integer     | No        | 1 = The ad is reward video; 0 = not reward video.                                  |
+| fallback         | integer     | No        | Flag to indicate if fallback is supported, where 0 = not supported, 1 = supported. |
+| adtype           | integer     | No        | advertising type of the request，where 1 = banner，2 = native，3 = video              |
+| placement_type   | integer     | No        | detailed advertising type of the request，请求的广告详细Type，Refer to List 5.27              |
+
+ 
+
+#### 4.1.14.1 imp.ext.skadn object
+
+| **Parameter name**           | **Type**       | **Required?**  | **Description**                                                                                    |
+|:-------------------|:-------------|:----------|:------------------------------------------------------------------------------------------|
+| versions           | string array | Yes       | Array of strings containing the supported skadnetwork versions.                           |
+| version            | string       | No        | Version of skad network supported.                                                        |
+| sourceapp          | string       | Yes       | Publisher app's AppStore ID                                                               |
+| skadnetids         | string array | Yes       | A subset of publisher's SKAdNetwork ID configured in info.plist.                          |
+| skadnetlist        | object       | No        | Object containing the IABTL list definition.Refer to **imp.ext.skadn.skadnetlist object** |
+| ext                | object       | No        | laceholder for exchange-specific extensions to OpenRTB                                    |
+
+ 
+
+### 4.1.14.2 imp.ext.skadn.skadnetlist object
+
+| **Parameter name**      | **Type**        | **Required?** | **Description**                                                                                                                  |
+|:--------------|:--------------|:---------|:------------------------------------------------------------------------------------------------------------------------|
+| max           | integer       | 否        | IABTL list containing the max entry ID of SKAdNetwork ID.                                                               |
+| excl          | integer array | 否        | Comma separated list of integer IABTL registration IDs to be excluded from IABTL shared list.                           |
+| addl          | string array  | 否        | Comma separated list of string SKAdNetwork IDs,expressed as lowercase strings, not included in the IABTL shared list.   |
+
+ 
+
+****
+
+ 
+
+### 4.1.15 device object 
+
+| **Parameter name** | **Type**  | **Required?**        | **Description**                                                                                                                                                  |
+|:-------------------|:----------|:---------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ua                 | string    | Yes                  | User-Agent field in HTTP request thread of user device                                                                                                           |
+| geo                | object    | Yes                  | Current geographic info of user. Refer to **geo object**                                                                                                         |
+| dnt                | integer   | recommended          | ‘Do Not Track’ identification set by browser in HTTP thread. Value of 0 means tracking is not restricted. Value of 1 means tracking is restricted / not allowed. |
+| lmt                | integer   | recommended          | Indicate user's authorization for ad tracking. Value of 0 means tracking is not restricted. Value of 1 means tracking is restricted / not allowed.               |
+| ip                 | string    | Yes for ipv4 network | ipv4 address of user's current network                                                                                                                           |
+| ipv6               | string    | Yes for ipv6 network | ipv6 address of user's current network                                                                                                                           |
+| devicetype         | integer   | recommended          | Device type. Section **5.21 Device type** is the reference of its enumerated values                                                                              |
+| make               | string    | recommended          | Device manufacturer (eg. ‘Apple’)                                                                                                                                |
+| model              | string    | recommended          | Device model (eg. ‘iPhone’)                                                                                                                                      |
+| os                 | string    | recommended          | Operation system (eg. Android, iOS)                                                                                                                              |
+| osv                | string    | recommended          | Operation system version                                                                                                                                         |
+| hwv                | integer   | No                   | Hardware version of the device (e.g., “5S” for iPhone 5S)                                                                                                        |
+| h                  | integer   | recommended          | Screen physical height / length.Unit is in pixels                                                                                                                |
+| w                  | integer   | recommended          | Screen physical width.Unit is in pixels                                                                                                                          |
+| ppi                | integer   | No                   | Screen size.Unit is in pixel per inch                                                                                                                            |
+| pxratio            | float     | No                   | The ratio of physical pixels to device independent pixels                                                                                                        |
+| js                 | integer   | No                   | Indicate if js is supported. Value of 0 means not supported. Value of 1 means supported.                                                                         |
+| geofetch           | integer   | No                   | Indicates if the geolocation API will be available to JavaScript code running in the banner, where 0 = no, 1 = yes                                               |
+| flashver           | string    | No                   | Version of Flash supported by the browser                                                                                                                        |
+| language           | string    | No                   | Device language, following ISO-639-1-alpha-2. If unknown, put ‘unknown’                                                                                          |
+| carrier            | string    | recommended          | Carrier or ISP (e.g., “VERIZON”) using exchange curated string names which should be published to bidders a priori.                                              |
+| mccmnc             | string    | recommended          | Mobile network carrier                                                                                                                                           |
+| connectiontype     | integer   | recommended          | Network connection mode. Section **5.8 Network Connection Mode** is the reference of its enumerated values                                                       |
+| ifa                | string    | recommended          | Identification used by client.Andorid: gaid, iOS: idfa                                                                                                           |
+| didsha1            | string    | No                   | Hardware device ID (eg. IMEI), via SHA1 hash                                                                                                                     |
+| didmd5             | string    | No                   | Hardware device ID (eg. IMEI), via MD5 hash                                                                                                                      |
+| dpidsha1           | string    | No                   | Platform device ID (eg. Android ID), via SHA1 hash                                                                                                               |
+| dpidmd5            | string    | No                   | Platform device ID (eg. Android ID), via MD5 hash                                                                                                                |
+| macsha1            | string    | No                   | Device MAC address, via SHA1 hash                                                                                                                                |
+| macmd5             | string    | No                   | Device MAC address, via MD5 hash                                                                                                                                 |
+| ext                | object    | No                   | Placeholder for exchange-specific extensions to OpenRTB. Refer to **device.ext object**                                                                          |
+
+ 
+
+### 4.1.15.1 device.ext  object
+
+| **Parameter name**   | **Type**    | **Required?** | **Description**                                                                                                                                 |
+|:-----------|:----------|:---------|:---------------------------------------------------------------------------------------------------------------------------------------|
+| ifv        | string    | No       | IDFV for iOS device in ad serving APP.                                                                                                 |
+| atts       | integer   | No       | Flag indicates the ad tracking authorization status on iOS device, where 0 = not determined; 1 = restricted; 2=denied; 3 = authorized. |
+
+ 
+
+****
+
+ 
+
+### 4.1.16 geo object
+
+| **Parameter name** | **Type**   | **Required?** | **Description**                                                                                                                                                                                              |
+|:-------------------|:-----------|:--------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| lat                | float      | No            | Latitude info, data range is (-90.0,+90.0). Negative value means South                                                                                                                                       |
+| lon                | float      | No            | Longitude info, data range is (-180.0,+180.0). Negative value means West.                                                                                                                                    |
+| type               | integer    | No            | Source type of geo info. Value of 1 means by GPS/Location service. Value of 2 means by IP address. Value of 3 means provided by user.Section **5.13 Location Type**is the reference of its enumerated values |
+| accuracy           | integer    | No            | Accuracy in meters. When latitude/longitude info is obtained by GPS/Location service, this field is reported.                                                                                                |
+| lastfix            | integer    | No            | Number of seconds since this geolocation fix was established. Note that devices may cache location data across multiple fetches. Ideally, this value should be from the time the actual fix was taken        |
+| ipservice          | integer    | No            | IP address provider, applicable for type = 2.Section **5.14 IP Location Type **is the reference of its enumerated values                                                                                     |
+| country            | string     | No            | Country code following ISO-3166-1-alpha-3                                                                                                                                                                    |
+| region             | string     | No            | Region code following ISO-3166-2.If country is USA, 2-letter state code is used                                                                                                                              |
+| regionfips104      | string     | No            | Region of a country using FIPS 10-4 notation. While OpenRTB supports this attribute, it has been withdrawn by NIST in 2008                                                                                   |
+| metro              | string     | N0            | Google metro code; similar to but not exactly Nielsen DMAs. See Appendix A for a link to the codes                                                                                                           |
+| city               | string     | No            | City code following UN/LOCODE                                                                                                                                                                                |
+| zip                | string     | No            | Postal code                                                                                                                                                                                                  |
+| utcoffset          | integer    | No            | Local time difference from UTC time, +/- in minutes                                                                                                                                                          |
+| ext                | object     | No            | Placeholder for exchange-specific extensions to OpenRTB                                                                                                                                                      |
+
+ 
+
+****
+
+ 
+
+### 4.1.17 user object
+
+| **Parameter name** | **Type**     | **Required?** | **Description**                                                                       |
+|:-------------------|:-------------|:--------------|:--------------------------------------------------------------------------------------|
+| id                 | string       | No            | User ID                                                                               |
+| buyeruid           | string       | No            | User ID defined by buyer                                                              |
+| gender             | string       | No            | Gender. Value of M means male, F means female, 0 means other gender.                  |
+| geo                | object       | No            | User geo info                                                                         |
+| yob                | integer      | No            | Year of birth, 4-digit number.                                                        |
+| keywords           | string       | No            | Keywords list of user's interests / intentions list, separated by comma (,)           |
+| customdata         | string       | No            | Customized data                                                                       |
+| data               | object array | No            | Extra user data. Each data object represents a different data source                  |
+| ext                | object       | No            | Placeholder for exchange-specific extensions to OpenRTB. Refer to **user.ext object** |
+
+ 
+
+#### 4.1.17.1 user.data object
+
+| **Parameter name** | **Type**     | **Required?** | **Description**                                                                       |
+|:-------------------|:-------------|:--------------|:--------------------------------------------------------------------------------------|
+| id                 | string       | No            | ID of data provider                                                                   |
+| name               | string       | No            | Name of data provider                                                                 |
+| segment            | object array | No            | Data segment that includes the actual data info.Refer to **user.data.segment object** |
+| ext                | object       | No            | Placeholder for exchange-specific extensions to OpenRTB                               |
+
+ 
+
+#### 4.1.17.2 user.data.segment object
+
+| **Parameter name** | **Type**     | **Required?** | **Description**                                                             |
+|:-------------------|:-------------|:--------------|:----------------------------------------------------------------------------|
+| id                 | string       | Yes           | User ID                                                                     |
+| buyeruid           | string       | No            | User ID defined by buyer                                                    |
+| gender             | string       | No            | Gender. Value of M means male, F means female, 0 means other gender.        |
+| geo                | object       | No            | User geo info                                                               |
+| yob                | integer      | No            | Year of birth, 4-digit number.                                              |
+| keywords           | string       | No            | Keywords list of user's interests / intentions list, separated by comma (,) |
+| customdata         | string       | No            | Customized data                                                             |
+| data               | object array | No            | Extra user data. Each data object represents a different data source        |
+| ext                | object       | No            | Placeholder for exchange-specific extensions to OpenRTB                     |
+
+ 
+
+#### 4.1.17.3 user.ext object
+
+| **Parameter name**        | **Type**     | **Required?** | **Description**              |
+|:----------------|:-----------|:---------|:--------------------|
+| consent         | integer    | No       | Does the user authorize all relevant parties to use personal data identifiers |
+
+ 
+
+****
+
+ 
+
+****
+
+## 4.2 Bid Response
+
+| **Parameter name** | **Type**     | **Required?** | **Description**                                                                           |
+|:-------------------|:-------------|:--------------|:------------------------------------------------------------------------------------------|
+| id                 | string       | Yes           | Identification for Bid Request, i.e. request id included in Bid Request section above     |
+| seatbid            | object array | Yes           | One set of SeatBid object. If a bid is offered, at least one SeatBid is filled in         |
+| bidid              | string       | No            | Response ID generated for each bidder, assisting with logs or tracking transaction        |
+| cur                | string       | No            | Unit of bid currency used, code following ISO-4217. If left blank, USD is used by default |
+| customdata         | string       | No            | Optional feature to allow a bidder to set data in the exchange’s cookie.                  |
+| nbr                | integer      | No            | Reason for not bidding. Refer to List 5.24                                                |
+| ext                | object       | No            | Placeholder for bidder-specific extensions to OpenRTB                                     |
+
+ 
+
+****
+
+ 
+
+### 4.2.1 seatbid object
+
+| **Parameter name** | **Type**      | **Required?** | **Description**                                                                                                                                                               |
+|:-------------------|:--------------|:--------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| bid                | object array  | Yes           | Array that includes at least 1 bid object. Each object is related to 1 display / impression                                                                                   |
+| seat               | string        | No            | Seat identification that represents the client (bidder, eg. advertiser, agency) on whose behalf this bid is made                                                              |
+| group              | interger      | No            | Indicate if all bids can win or fail at the same time. Default value is 0, meaning independent bid is allowed. Value of 1 means a group of bids win or fail at the same time. |
+| ext                | object        | No            | Placeholder for bidder-specific extensions to OpenRTB                                                                                                                         |
+
+ 
+
+****
+
+ 
+
+### 4.2.2 bid object
+
+Each bid object must have a corresponding imp id, indicating the bid is offered for the specific impression.
+
+| **Parameter name**   | **Type**      | **Required?**       | **Description**                                                                                                                                                                                                                             |
+|:---------------------|:--------------|:--------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id                   | string        | Yes                 | Bid ID generated for each bidder, used for recording logs or tracking acitivity                                                                                                                                                             |
+| impid                | string        | Yes                 | ID of imp object related to a Bid request                                                                                                                                                                                                   |
+| price                | float         | Yes                 | CPM price for each display                                                                                                                                                                                                                  |
+| nurl                 | string        | No                  | Nurl link for notification when a bid wins, and will then be used by transaction platform                                                                                                                                                   |
+| burl                 | string        | No                  | Billing notice URL called by the exchange when a winning bid becomes billable based on exchange-specific business policy (e.g.,typically delivered, viewed, etc.).Substitution macros ${AUCTION_PRICE} may be included                      |
+| lurl                 | string        | No                  | Loss notice URL called by the exchange when a bid is known to have been loss                                                                                                                                                                |
+| adm                  | string        | Yes                 | Convey ad content.Native ad uses adm field to return ad content. Refer to **native ad response** below for more detailsVideo ad uses adm field to return ad content in vast format. Refer to **vast video response** below for more details |
+| adid                 | string        | No                  | Preloaded ad ID that can be used when a bid offer wins                                                                                                                                                                                      |
+| adomain              | string array  | No                  | Domain name of client, used for filtering check                                                                                                                                                                                             |
+| bundle               | string        | Yes for install ads | App package name, eg. Android package name: com.foo.mygame, iOS package name: id907394059                                                                                                                                                   |
+| iurl                 | string        | No                  | Image link to indicate ad campaign content, used for quality or security tracking                                                                                                                                                           |
+| cid                  | string        | No                  | Campaign ID, to assist with ad QC. Each cid has one set of creatives, which is the creatives represented by iurl                                                                                                                            |
+| crid                 | string        | No                  | ID of a set of creatives, to assist with ad QC                                                                                                                                                                                              |
+| cat                  | string array  | No                  | IAB category of creative.Section **5.1 IAB category** is the reference of its enumerated values                                                                                                                                             |
+| attr                 | integer array | No                  | Attribute array to describe creative.Section **5.3 Creative attribute list** is the reference of its enumerated values                                                                                                                      |
+| api                  | integer       | No                  | Supported API frame of the display. Section **5.6 API frame** is the reference of its enumerated values                                                                                                                                     |
+| protocol             | integer       | No                  | Supported video Bid Response protocol. Section **5.8 Video bid response protocol** is the reference of its enumerated values                                                                                                                |
+| qagmediarating       | integer       | No                  | Indicate rating of creative content following IQG standard.Section **5.9 IQG media rating** is the reference of its enumerated values                                                                                                       |
+| language             | string        | No                  | Language of the creative using ISO-639-1-alpha-2                                                                                                                                                                                            |
+| dealid               | string        | No                  | Refer to deal.idfrom the bid request if this bid pertains to a private marketplace direct deal                                                                                                                                          |
+| w                    | integer       | No                  | Creative width. Unit is in pixels                                                                                                                                                                                                           |
+| h                    | integer       | No                  | Creative height. Unit is in pixels                                                                                                                                                                                                          |
+| wratio               | integer       | No                  | Relative width of the creative when expressing size as a ratio. Required for Flex Ads                                                                                                                                                       |
+| hratio               | integer       | No                  | Relative height of the creative when expressing size as a ratio. Required for Flex Ads                                                                                                                                                      |
+| exp                  | integer       | No                  | Duration that the bidder is willing to wait between the auction and the actual display / impression.Unit is in seconds, with default value of 3600                                                                                          |
+| ext                  | object        | No                  | Placeholder for bidder-specific extensions to OpenRTB                                                                                                                                                                                       |
+
+ 
+
+### 4.2.3 native ad response
+
+Native ad response content is saved in **adm** field, with the content including 1 **native object**. Native format supports native version 1.2 protocol.
+
+ 
+
+Native object has following attributes:
+
+| **Parameter name** | **Type**         | **Required?** | **Description**                                                                                                                                  |
+|:-------------------|:-----------------|:--------------|:-------------------------------------------------------------------------------------------------------------------------------------------------|
+| ver                | string           | No            | Native Markup version in use                                                                                                                     |
+| assets             | array of objects | Yes           | List of native ad's assets.Refer to **asset response object**                                                                                    |
+| link               | object           | Yes           | Destination link if the ad is clicked.Refer to **link object**                                                                                   |
+| imptrackers        | array of string  | Yes           | Array of impression tracking URLs.When a display / impression happens, tracking URLs are reported and used as the reference for cost calculation |
+| ext                | Object           | No            | Placeholder that may contain custom JSON                                                                                                         |
+
+ 
+
+### 4.2.4 asset response object
+
+Asset response object must strictly follow asset object in the Bid Request. Each object corresponds to an ID, which matches with the asset request object ID.
+
+| **Parameter name** | **Type**   | **Required?** | **Description**                                                           |
+|:-------------------|:-----------|:--------------|:--------------------------------------------------------------------------|
+| id                 | int        | Yes           | Asset ID that matches with ID in Bid Request                              |
+| required           | int        | No            | Set to 1 if asset is required (bidder requires it to be displayed)        |
+| title              | object     | No            | Title object for title assets. Refer to **title object**                  |
+| img                | object     | No            | Image object for image assets. Refer to **img object**                    |
+| video              | object     | No            | Video object for video assets. Refer to **video object**                  |
+| data               | object     | No            | Data object for data assets, eg. rating, pricing.Refer to **data object** |
+| link               | object     | No            | Destination link if the ad is clicked.Refer to **link object**            |
+| ext                | object     | No            | Placeholder that may contain custom JSON                                  |
+
+ 
+ 
+### 4.2.5 title object
+
+| **Parameter name** | **Type** | **Required?** | **Description**                          |
+|:-------------------|:---------|:--------------|:-----------------------------------------|
+| text               | string   | Yes           | Title text                               |
+| len                | integer  | No            | Length of title text                     |
+| ext                | object   | No            | Placeholder that may contain custom JSON |
+
+ 
+
+### 4.2.6 Img object
+
+| **Parameter name** | **Type** | **Required?** | **Description**                                                                                                                   |
+|:-------------------|:---------|:--------------|:----------------------------------------------------------------------------------------------------------------------------------|
+| type               | integer  | No            | Required for assetsurl or dcourl responses, not required for embedded asset responsesIcon image: Value = 1 Large image: Value = 3 |
+| url                | string   | Yes           | URL of the image asset                                                                                                            |
+| w                  | integer  | Yes           | Image width in pixels                                                                                                             |
+| h                  | integer  | Yes           | Image height in pixels                                                                                                            |
+| ext                | object   | No            | Placeholder that may contain custom JSON                                                                                          |
+
+ 
+
+### 4.2.7 data object
+
+| **Parameter name** | **Type** | **Required?** | **Description**                                                                 |
+|:-------------------|:---------|:--------------|:--------------------------------------------------------------------------------|
+| type               | integer  | No            | Type ID of data element, must follow **5.26 Data Asset Type**if to be submitted |
+| label              | string   | No            | Name of data element, must follow **5.26 Data Asset Type**if to be submitted    |
+| value              | string   | Yes           | Formatted string of data, based on the requirement of each data type            |
+| ext                | object   | No            | Placeholder that may contain custom JSON                                        |
+
+ 
+
+### 4.2.8 video object
+
+Video response object uses vasttag parameter for video content in vast format. 
+
+Note: Video in native ad response is just one type of assets. Therefore, it doesn't support impression and click tracking that aims only at video. Instead, it can support tracking of the rate of progress when a video is being played.
+
+| **Parameter name** | **Type** | **Required?** | **Description**                        |
+|:-------------------|:---------|:--------------|:---------------------------------------|
+| vasttag            | string   | Yes           | Indicate video content in vast format  |
+
+ 
+
+### 4.2.9 link object
+
+| **Parameter name** | **Type**         | **Required?** | **Description**                                                 |
+|:-------------------|:-----------------|:--------------|:----------------------------------------------------------------|
+| url                | string           | Yes           | Landing URL of the clickable link                               |
+| clicktrackers      | array of strings | No            | List of third-party tracker URLs tobe fired on click of the URL |
+| ext                | object           | No            | Placeholder that may contain custom JSON                        |
+
+****
+
+# 
+# **5 RTB Interface Enumerated Value List**
+
+## 5.1 IAB Category Enumerated Value
+
+| **Value**          |**Description**|
+|:-------------------|:----|
+| **IAB1**           |**Arts & Entertainment**|
+| IAB1-1             |Books & Literature|
+| IAB1-2             |Celebrity Fan/Gossip|
+| IAB1-3             |Fine Art|
+| IAB1-4             |Humor|
+| IAB1-5             |Movies|
+| IAB1-6             |Music|
+| IAB1-7             |Television|
+| IAB2               |**Automotive**|
+| IAB2-1             |Auto Parts|
+| **IAB2-2**         |Auto Repair|
+| IAB2-3             |Buying/Selling Cars|
+| IAB2-4             |Car Culture|
+| IAB2-5             |Certified Pre-Owned|
+| IAB2-6             |Convertible|
+| IAB2-7             |Coupe|
+| IAB2-8             |Crossover|
+| IAB2-9             |Diesel|
+| IAB2-10            |Electric Vehicle|
+| IAB2-11            |Hatchback|
+| IAB2-12            |Hybrid|
+| IAB2-13            |Luxury|
+| IAB2-14            |Minivan|
+| IAB2-15            |Motorcycles|
+| IAB2-16            |Off-Road Vehicles|
+| IAB2-17            |Performance Vehicles|
+| IAB2-18            |Pickup|
+| IAB2-19            |Road-Side Assistance|
+| IAB2-20            |Sedan|
+| IAB2-21            |Trucks & Accessories|
+| IAB2-22            |Vintage Cars|
+| IAB2-23            |Wagon|
+| **IAB3**           |**Business**|
+| IAB3-1             |Advertising|
+| IAB3-2             |Agriculture|
+| IAB3-3             |Biotech/Biomedical|
+| IAB3-4             |Business Software|
+| IAB3-5             |Construction|
+| IAB3-6             |Forestry|
+| IAB3-7             |Government|
+| IAB3-8             |Green Solutions|
+| IAB3-9             |Human Resources|
+| IAB3-10            |Logistics|
+| IAB3-11            |Marketing|
+| IAB3-12            |Metals|
+| **IAB4**           |**Careers**|
+| IAB4-1             |Career Planning|
+| IAB4-2             |College|
+| IAB4-3             |Financial Aid|
+| IAB4-4             |Job Fairs|
+| IAB4-5             |Job Search|
+| IAB4-6             |Resume Writing/Advice|
+| IAB4-7             |Nursing|
+| IAB4-8             |Scholarships|
+| IAB4-9             |Telecommuting|
+| IAB4-10            |U.S. Military|
+| IAB4-11            |Career Advice|
+| **IAB5**           |**Education**|
+| IAB5-1             |7-12 Education|
+| IAB5-2             |Adult Education|
+| IAB5-3             |Art History|
+| IAB5-4             |College Administration|
+| IAB5-5             |College Life|
+| IAB5-6             |Distance Learning|
+| IAB5-7             |English as a 2nd Language|
+| IAB5-8             |Language Learning|
+| IAB5-9             |Graduate School|
+| IAB5-10            |Homeschooling|
+| IAB5-11            |Homework/Study Tips|
+| IAB5-12            |K-6 Educators|
+| IAB5-13            |Private School|
+| IAB5-14            |Special Education|
+| IAB5-15            |Studying Business|
+| **IAB6**           |**Family & Parenting**|
+| IAB6-1             |Adoption|
+| IAB6-2             |Babies & Toddlers|
+| IAB6-3             |Daycare/Pre School|
+| IAB6-4             |Family Internet|
+| IAB6-5             |Parenting - K-6 Kids|
+| IAB6-6             |Parenting teens|
+| IAB6-7             |Pregnancy|
+| IAB6-8             |Special Needs Kids|
+| IAB6-9             |Eldercare|
+| **IAB7**           |**Health & Fitness**|
+| IAB7-1             |Exercise|
+| IAB7-2             |ADD|
+| IAB7-3             |AIDS/HIV|
+| IAB7-4             |Allergies|
+| IAB7-5             |Alternative Medicine|
+| IAB7-6             |Arthritis|
+| IAB7-7             |Asthma|
+| IAB7-8             |Autism/PDD|
+| IAB7-9             |Bipolar Disorder|
+| IAB7-10            |Brain Tumor|
+| IAB7-11            |Cancer|
+| IAB7-12            |Cholesterol|
+| IAB7-13            |Chronic Fatigue Syndrome|
+| IAB7-14            |Chronic Pain|
+| IAB7-15            |Cold & Flu|
+| IAB7-16            |Deafness|
+| IAB7-17            |Dental Care|
+| IAB7-18            |Depression|
+| IAB7-19            |Dermatology|
+| IAB7-20            |Diabetes|
+| IAB7-21            |Epilepsy|
+| IAB7-22            |GERD/Acid Reflux|
+| IAB7-23            |Headaches/Migraines|
+| IAB7-24            |Heart Disease|
+| IAB7-25            |Herbs for Health|
+| IAB7-26            |Holistic Healing|
+| IAB7-27            |IBS/Crohn’s Disease|
+| IAB7-28            |Incest/Abuse Support|
+| IAB7-29            |Incontinence|
+| IAB7-30            |Infertility|
+| IAB7-31            |Men’s Health|
+| IAB7-32            |Nutrition|
+| IAB7-33            |Orthopedics|
+| IAB7-34            |Panic/Anxiety Disorders|
+| IAB7-35            |Pediatrics|
+| IAB7-36            |Physical Therapy|
+| IAB7-37            |Psychology/Psychiatry|
+| IAB7-38            |Senior Health|
+| IAB7-39            |Sexuality|
+| IAB7-40            |Sleep Disorders|
+| IAB7-41            |Smoking Cessation|
+| IAB7-42            |Substance Abuse|
+| IAB7-43            |Thyroid Disease|
+| IAB7-44            |Weight Loss|
+| IAB7-45            |Women's Health|
+| **IAB8**           |**Food & Drink**|
+| IAB8-1             |American Cuisine|
+| IAB8-2             |Barbecues & Grilling|
+| IAB8-3             |Cajun/Creole|
+| IAB8-4             |Chinese Cuisine|
+| IAB8-5             |Cocktails/Beer|
+| IAB8-6             |Coffee/Tea|
+| IAB8-7             |Cuisine-Specific|
+| IAB8-8             |Desserts & Baking|
+| IAB8-9             |Dining Out|
+| IAB8-10            |Food Allergies|
+| IAB8-11            |French Cuisine|
+| IAB8-12            |Health/Low-Fat Cooking|
+| IAB8-13            |Italian Cuisine|
+| IAB8-14            |Japanese Cuisine|
+| IAB8-15            |Mexican Cuisine|
+| IAB8-16            |Vegan|
+| IAB8-17            |Vegetarian|
+| IAB8-18            |Wine|
+| **IAB9**           |**Hobbies & Interests**|
+| IAB9-1             |Art/Technology|
+| IAB9-2             |Arts & Crafts|
+| IAB9-3             |Beadwork|
+| IAB9-4             |Bird-Watching|
+| IAB9-5             |Board Games/Puzzles|
+| IAB9-6             |Candle & Soap Making|
+| IAB9-7             |Card Games|
+| IAB9-8             |Chess|
+| IAB9-9             |Cigars|
+| IAB9-10            |Collecting|
+| IAB9-11            |Comic Books|
+| IAB9-12            |Drawing/Sketching|
+| IAB9-13            |Freelance Writing|
+| IAB9-14            |Genealogy|
+| IAB9-15            |Getting Published|
+| IAB9-16            |Guitar|
+| IAB9-17            |Home Recording|
+| IAB9-18            |Investors & Patents|
+| IAB9-19            |Jewelry Making|
+| IAB9-20            |Magic & Illusion|
+| IAB9-21            |Needlework|
+| IAB9-22            |Painting|
+| IAB9-23            |Photography|
+| IAB9-24            |Radio|
+| IAB9-25            |Roleplaying Games|
+| IAB9-26            |Sci-Fi & Fantasy|
+| IAB9-27            |Scrapbooking|
+| IAB9-28            |Screenwriting|
+| IAB9-29            |Stamps & Coins|
+| IAB9-30            |Video & Computer Games|
+| IAB9-31            |Woodworking|
+| **IAB10**          |**Home & Garden**|
+| IAB10-1            |Appliances|
+| IAB10-2            |Entertaining|
+| IAB10-3            |Environmental Safety|
+| IAB10-4            |Gardening|
+| IAB10-5            |Home Repair|
+| IAB10-6            |Home Theater|
+| IAB10-7            |Interior Decorating|
+| IAB10-8            |Landscaping|
+| IAB10-9            |Remodeling & Construction|
+| **IAB11**          |**Law, Government, & Politics**|
+| IAB11-1            |Immigration|
+| IAB11-2            |Legal Issues|
+| IAB11-3            |U.S. Government Resources|
+| IAB11-4            |Politics|
+| IAB11-5            |Commentary|
+| **IAB12**          |**News**|
+| IAB12-1            |International News|
+| IAB12-2            |National News|
+| IAB12-3            |Local News|
+| **IAB13**          |**Personal Finance**|
+| IAB13-1            |Beginning Investing|
+| IAB13-2            |Credit/Debt & Loans|
+| IAB13-3            |Financial News|
+| IAB13-4            |Financial Planning|
+| IAB13-5            |Hedge Fund|
+| IAB13-6            |Insurance|
+| IAB13-7            |Investing|
+| IAB13-8            |Mutual Funds|
+| IAB13-9            |Options|
+| IAB13-10           |Retirement Planning|
+| IAB13-11           |Stocks|
+| IAB13-12           |Tax Planning|
+| **IAB14**          |**Society**|
+| IAB14-1            |Dating|
+| IAB14-2            |Divorce Support|
+| IAB14-3            |Gay Life|
+| IAB14-4            |Marriage|
+| IAB14-5            |Senior Living|
+| IAB14-6            |Teens|
+| IAB14-7            |Weddings|
+| IAB14-8            |Ethnic Specific|
+| **IAB15**          |**Science**|
+| IAB15-1            |Astrology|
+| IAB15-2            |Biology|
+| IAB15-3            |Chemistry|
+| IAB15-4            |Geology|
+| IAB15-5            |Paranormal Phenomena|
+| IAB15-6            |Physics|
+| IAB15-7            |Space/Astronomy|
+| IAB15-8            |Geography|
+| IAB15-9            |Botany|
+| IAB15-10           |Weather|
+| **IAB16**          |**Pets**|
+| IAB16-1            |Aquariums|
+| IAB16-2            |Birds|
+| IAB16-3            |Cats|
+| IAB16-4            |Dogs|
+| IAB16-5            |Large Animals|
+| IAB16-6            |Reptiles|
+| IAB16-7            |Veterinary Medicine|
+| **IAB17**          |**Sports**|
+| IAB17-1            |Auto Racing|
+| IAB17-2            |Baseball|
+| IAB17-3            |Bicycling|
+| IAB17-4            |Bodybuilding|
+| IAB17-5            |Boxing|
+| IAB17-6            |Canoeing/Kayaking|
+| IAB17-7            |Cheerleading|
+| IAB17-8            |Climbing|
+| IAB17-9            |Cricket|
+| IAB17-10           |Figure Skating|
+| IAB17-11           |Fly Fishing|
+| IAB17-12           |Football|
+| IAB17-13           |Freshwater Fishing|
+| IAB17-14           |Game & Fish|
+| IAB17-15           |Golf|
+| IAB17-16           |Horse Racing|
+| IAB17-17           |Horses|
+| IAB17-18           |Hunting/Shooting|
+| IAB17-19           |Inline Skating|
+| IAB17-20           |Martial Arts|
+| IAB17-21           |Mountain Biking|
+| IAB17-22           |NASCAR Racing|
+| IAB17-23           |Olympics|
+| IAB17-24           |Paintball|
+| IAB17-25           |Power & Motorcycles|
+| IAB17-26           |Pro Basketball|
+| IAB17-27           |Pro Ice Hockey|
+| IAB17-28           |Rodeo|
+| IAB17-29           |Rugby|
+| IAB17-30           |Running/Jogging|
+| IAB17-31           |Sailing|
+| IAB17-32           |Saltwater Fishing|
+| IAB17-33           |Scuba Diving|
+| IAB17-34           |Skateboarding|
+| IAB17-35           |Skiing|
+| IAB17-36           |Snowboarding|
+| IAB17-37           |Surfing/Body-Boarding|
+| IAB17-38           |Swimming|
+| IAB17-39           |Table Tennis/Ping-Pong|
+| IAB17-40           |Tennis|
+| IAB17-41           |Volleyball|
+| IAB17-42           |Walking|
+| IAB17-43           |Waterski/Wakeboard|
+| IAB17-44           |World Soccer|
+| **IAB18**          |**Style & Fashion**|
+| IAB18-1            |Beauty|
+| IAB18-2            |Body Art|
+| IAB18-3            |Fashion|
+| IAB18-4            |Jewelry|
+| IAB18-5            |Clothing|
+| IAB18-6            |Accessories|
+| **IAB19**          |**Technology & Computing**|
+| IAB19-1            |3-D Graphics|
+| IAB19-2            |Animation|
+| IAB19-3            |Antivirus Software|
+| IAB19-4            |C/C++|
+| IAB19-5            |Cameras & Camcorders|
+| IAB19-6            |Cell Phones|
+| IAB19-7            |Computer Certification|
+| IAB19-8            |Computer Networking|
+| IAB19-9            |Computer Peripherals|
+| IAB19-10           |Computer Reviews|
+| IAB19-11           |Data Centers|
+| IAB19-12           |Databases|
+| IAB19-13           |Desktop Publishing|
+| IAB19-14           |Desktop Video|
+| IAB19-15           |Email|
+| IAB19-16           |Graphics Software|
+| IAB19-17           |Home Video/DVD|
+| IAB19-18           |Internet Technology|
+| IAB19-19           |Java|
+| IAB19-20           |JavaScript|
+| IAB19-21           |Mac Support|
+| IAB19-22           |MP3/MIDI|
+| IAB19-23           |Net Conferencing|
+| IAB19-24           |Net for Beginners|
+| IAB19-25           |Network Security|
+| IAB19-26           |Palmtops/PDAs|
+| IAB19-27           |PC Support|
+| IAB19-28           |Portable|
+| IAB19-29           |Entertainment|
+| IAB19-30           |Shareware/Freeware|
+| IAB19-31           |Unix|
+| IAB19-32           |Visual Basic|
+| IAB19-33           |Web Clip Art|
+| IAB19-34           |Web Design/HTML|
+| IAB19-35           |Web Search|
+| IAB19-36           |Windows|
+| **IAB20**          |**Travel**|
+| IAB20-1            |Adventure Travel|
+| IAB20-2            |Africa|
+| IAB20-3            |Air Travel|
+| IAB20-4            |Australia & New Zealand|
+| IAB20-5            |Bed & Breakfasts|
+| IAB20-6            |Budget Travel|
+| IAB20-7            |Business Travel|
+| IAB20-8            |By US Locale|
+| IAB20-9            |Camping|
+| IAB20-10           |Canada|
+| IAB20-11           |Caribbean|
+| IAB20-12           |Cruises|
+| IAB20-13           |Eastern Europe|
+| IAB20-14           |Europe|
+| IAB20-15           |France|
+| IAB20-16           |Greece|
+| IAB20-17           |Honeymoons/Getaways|
+| IAB20-18           |Hotels|
+| IAB20-19           |Italy|
+| IAB20-20           |Japan|
+| IAB20-21           |Mexico & Central America|
+| IAB20-22           |National Parks|
+| IAB20-23           |South America|
+| IAB20-24           |Spas|
+| IAB20-25           |Theme Parks|
+| IAB20-26           |Traveling with Kids|
+| IAB20-27           |United Kingdom|
+| **IAB21**          |**Real Estate**|
+| IAB21-1            |Apartments|
+| IAB21-2            |Architects|
+| IAB21-3            |Buying/Selling Homes|
+| **IAB22**          |**Shopping**|
+| IAB22-1            |Contests & Freebies|
+| IAB22-2            |Couponing|
+| IAB22-3            |Comparison|
+| IAB22-4            |Engines|
+| **IAB23**          |**Religion & Spirituality**|
+| IAB23-1            |Alternative Religions|
+| IAB23-2            |Atheism/Agnosticism|
+| IAB23-3            |Buddhism|
+| IAB23-4            |Catholicism|
+| IAB23-5            |Christianity|
+| IAB23-6            |Hinduism|
+| IAB23-7            |Islam|
+| IAB23-8            |Judaism|
+| IAB23-9            |Latter-Day Saints|
+| IAB23-10           |Pagan/Wiccan|
+| **IAB24IAB25** |**UncategorizedNon-Standard Content**|
+| IAB25-1            |Unmoderated UGC|
+| IAB25-2            |Extreme Graphic/Explicit Violence|
+| IAB25-3            |Pornography|
+| IAB25-4            |Profane Content|
+| IAB25-5            |Hate Content|
+| IAB25-6            |Under Construction|
+| IAB25-7            |Incentivized|
+| **IAB26**          |**Illegal Content**|
+| IAB26-1            |Illegal Content|
+| IAB26-2            |Warez|
+| IAB26-3            |Spyware/Malware|
+| IAB26-4            |Copyright Infringement|
+
+ 
+
+## 5.2 Banner Ad Type Enumerated Value
+
+|**Value**|**Description**|
+|:----|:----|:----|:----|
+| 1 |XHTML Text Ad (usually mobile)|
+| 2 |XHTML Banner Ad. (usually mobile)|
+| 3 |JavaScript Ad; must be valid XHTML (i.e., Script Tags Included)|
+| 4 |iframe|
+
+ 
+
+## 5.3 **Creative Attribute Enumerated Value**
+
+|**Value**|**Description**|
+|:----|:----|
+|1|Audio Ad(Auto-Play)|
+|2|Audio Ad(User Initiated)|
+|3|Expandable(Automatic)|
+|4|Expandable(User Initiated - Click)|
+|5|Expandable(User Initiated - Rollover)|
+|6|In-Banner Video Ad (Auto-Play)|
+|7|In-Banner Video Ad (User Initiated)|
+|8|Pop (e.g., Over, Under, or Upon Exit)|
+|9|Provocative or Suggestive Imagery|
+|10|Shaky, Flashing, Flickering, Extreme Animation, Smileys|
+|11|Surveys|
+|12|Text Only|
+|13|User Interactive (e.g., Embedded Games)|
+|14|Windows Dialog or Alert Style|
+|15|Has Audio On/Off Button|
+|16|Ad Provides Skip Button (e.g. VPAID-rendered skip button on pre-roll video)|
+|17|Adobe Flash|
+
+ 
+
+## 5.4 Ad Position Enumerated Value
+
+| **Value** | **Description**                                                                       |
+|:----------|:--------------------------------------------------------------------------------------|
+| 0         | Unknown                                                                               |
+| 1         | Above the Fold                                                                        |
+| 2         | DEPRECATED - May or may not be initially visible depending on screen size/resolution. |
+| 3         | Below the Fold                                                                        |
+| 4         | Header                                                                                |
+| 5         | Footer                                                                                |
+| 6         | Sidebar                                                                               |
+| 7         | Full Screen                                                                           |
+
+
+ 
+## 5.5 Expandable Direction Enumerated Value
+
+| **Value** | **Description** |
+|:----------|:----------------|
+| :------   | :------------   |
+| 1         | Left            |
+| 2         | Right           |
+| 3         | Up              |
+| 4         | Down            |
+| 5         | Full Screen     |
+
+
+ 
+## 5.6 API Frame Enumerated Value
+
+|**Value**|**Description**|
+|:----|:----|
+|1|VPAID 1.0|
+|2|VPAID 2.0|
+|3|MRAID-1|
+|4|ORMMA|
+|5|MRAID-2|
+|6|MRAID-3|
+
+ 
+## 5.7 Video Linearity Enumerated Value
+
+| **Value** | **Description**            |
+|:----------|:---------------------------|
+| 1         | Linear / In-Stream         |
+| 2         | Non-Linear / Overlay       |
+
+ 
+## 5.8 Video Bid Response Protocol Enumerated Value
+
+| **Value** | **Description**   |
+|:----------|:------------------|
+| 1         | VAST 1.0          |
+| 2         | VAST 2.0          |
+| 3         | VAST 3.0          |
+| 4         | VAST 1.0 Wrapper  |
+| 5         | VAST 2.0 Wrapper  |
+| 6         | VAST 3.0 Wrapper  |
+| 7         | VAST 4.0          |
+| 8         | VAST 4.0 Wrapper  |
+| 9         | DAAST 1.0         |
+| 10        | DAAST 1.0 Wrapper |
+
+ 
+## 5.9 Video Placement Types Enumerated Value
+
+| **Value** | **Description**                                                                                                                                                                                                                                                                             |
+|:----------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1         | In-Stream. Played before, during or after the streaming video content that the consumer has requested (e.g., Pre-roll, Mid-roll, Post-roll).                                                                                                                                                |
+| 2         | In-Banner. Exists within a web banner that leverages the banner space to deliver a video experience as opposed to another static or rich media format. The format relies on the existence of display ad inventory on the page for its delivery.                                             |
+| 3         | In-Article. Loads and plays dynamically between paragraphs of editorial content; existing as a standalone branded message.                                                                                                                                                                  |
+| 4         | In-Feed. Found in content, social, or product feeds.                                                                                                                                                                                                                                        |
+| 5         | Interstitial/Slider/Floating. Covers the entire or a portion of screen area, but is always on screen while displayed (i.e. cannot be scrolled out of view). Note that a full-screen interstitial (e.g., in mobile) can be distinguished from a floating/slider unit by the imp.instl field. |
+
+ 
+## 5.10 Playback Methods Enumerated Value
+
+| **Value** | **Description**                                          |
+|:----------|:---------------------------------------------------------|
+| 1         | Initiates on Page Load with Sound On                     |
+| 2         | Initiates on Page Load with Sound Off by Default         |
+| 3         | Initiates on Click with Sound On                         |
+| 4         | Initiates on Mouse-Over with Sound On                    |
+| 5         | Initiates on Entering Viewport with Sound On             |
+| 6         | Initiates on Entering Viewport with Sound Off by Default |
+
+ 
+## 5.11 Playback Cessation Modes Enumerated Value
+
+| **Value** | **Description**                                                                                           |
+|:----------|:----------------------------------------------------------------------------------------------------------|
+| 1         | On Video Completion or when Terminated by User                                                            |
+| 2         | On Leaving Viewport or when Terminated by User                                                            |
+| 3         | On Leaving Viewport Continues as a Floating/Slider Unit until Video Completion or when Terminated by User |
+
+ 
+
+## 5.12 Start Delay Enumerated Value
+
+| **Value** | **Description**                                  |
+|:----------|:-------------------------------------------------|
+| >0        | Mid-Roll (value indicates start delay in second) |
+| 0         | Pre-Roll                                         |
+| -1        | Generic Mid-Roll                                 |
+| -2        | Generic Post-Roll                                |
+
+ 
+
+## 5.13 Production Quality Enumerated Value
+
+| **Value** | **Description**                        |
+|:----------|:---------------------------------------|
+| 0         | Unknown                                |
+| 1         | Professionally Produced                |
+| 2         | Prosumer                               |
+| 3         | User Generated (UGC)                   |
+
+ 
+
+## 5.14 Companion Types Enumerated Value
+
+| **Value** | **Description**                   |
+|:----------|:----------------------------------|
+| 1         | Static Resource                   |
+| 2         | HTML Resource                     |
+| 3         | iframe Resource                   |
+
+ 
+
+## 5.15 Content Delivery Methods Enumerated Value
+
+| **Value** | **Description**      |
+|:----------|:---------------------|
+| 1         | Streaming            |
+| 2         | Progressive          |
+| 3         | Download             |
+
+ 
+
+## 5.16 Feed Types Enumerated Value
+
+| **Value** | **Description**            |
+|:----------|:---------------------------|
+| 1         | Music Service              |
+| 2         | FM/AM Broadcast            |
+| 3         | Podcast                    |
+
+ 
+
+## 5.17 Volume Normalization Modes Enumerated Value
+
+| **Value** | **Description**                         |
+|:----------|:----------------------------------------|
+| 0         | None                                    |
+| 1         | Ad Volume Average Normalized to Content |
+| 2         | Ad Volume Peak Normalized to Content    |
+| 3         | Ad Loudness Normalized to Content       |
+| 4         | Custom Volume Normalization             |
+
+ 
+
+## 5.18 Content Context Enumerated Value
+
+| **Value** | **Description**                                                                    |
+|:----------|:-----------------------------------------------------------------------------------|
+| 1         | Video (i.e., video file or stream such as Internet TV broadcasts)                  |
+| 2         | Game (i.e., an interactive software game)                                          |
+| 3         | Music (i.e., audio file or stream such as Internet radio broadcasts)               |
+| 4         | Application (i.e., an interactive software application)                            |
+| 5         | Text (i.e., primarily textual document such as a web page, eBook, or news article) |
+| 6         | Other (i.e., none of the other categories applies)                                 |
+| 7         | Unknown                                                                            |
+
+ 
+
+## 5.19 IQG Media Ratings Enumerated Value
+
+| **Value** | **Description**  |
+|:----------|:-----------------|
+| 1         | All Audiences    |
+| 2         | Everyone Over 12 |
+| 3         | Mature Audiences |
+
+ 
+
+## 5.20 Location Type Enumerated Value
+
+| **Value** | **Description**                         |
+|:----------|:----------------------------------------|
+| 1         | GPS/Location Services                   |
+| 2         | IP Address                              |
+| 3         | User provided (e.g., registration data) |
+
+ 
+
+## 5.21 Device Type Enumerated Value
+
+| **Value** | **Description**                      |
+|:----------|:-------------------------------------|
+| 1         | Mobile/Tablet Version 2.0            |
+| 2         | Personal Computer Version 2.0        |
+| 3         | Connected TV Version 2.0             |
+| 4         | Phone New for Version 2.2            |
+| 5         | Tablet New for Version 2.2           |
+| 6         | Connected Device New for Version 2.2 |
+| 7         | Set Top Box New for Version 2.2      |
+
+ 
+
+## 5.22 Connection Type Enumerated Value
+
+| **Value** | **Description**                       |
+|:----------|:--------------------------------------|
+| 0         | Unknown                               |
+| 1         | Ethernet                              |
+| 2         | WIFI                                  |
+| 3         | Cellular Network – Unknown Generation |
+| 4         | Cellular Network – 2G                 |
+| 5         | Cellular Network – 3G                 |
+| 6         | Cellular Network – 4G                 |
+| 7         | Cellular Network – 5G                 |
+
+ 
+
+## 5.23 IP Location Services Enumerated Value
+
+| **Value** | **Description**               |
+|:----------|:------------------------------|
+| 1         | ip2location                   |
+| 2         | Neustar (Quova)               |
+| 3         | MaxMind                       |
+| 4         | NetAcuity (Digital Element)   |
+
+ 
+
+## 5.24 No-Bid Reason Codes Enumerated Value
+
+| **Value** | **Description**                 |
+|:----------|:--------------------------------|
+| 0         | Unknown Error                   |
+| 1         | Technical Error                 |
+| 2         | Invalid Request                 |
+| 3         | Known Web Spider                |
+| 4         | Suspected Non-Human Traffic     |
+| 5         | Cloud, Data center, or Proxy IP |
+| 6         | Unsupported Device              |
+| 7         | Blocked Publisher or Site       |
+| 8         | Unmatched User                  |
+| 9         | Daily Reader Cap Met            |
+| 10        | Daily Domain Cap Met            |
+
+ 
+
+## 5.25 Loss Reason Codes Enumerated Value
+
+| **Value** | **Description**                                                                        |
+|:----------|:---------------------------------------------------------------------------------------|
+| 0         | Bid Won                                                                                |
+| 1         | Internal Error                                                                         |
+| 2         | Impression Opportunity Expired                                                         |
+| 3         | Invalid Bid Response                                                                   |
+| 4         | Invalid Deal ID                                                                        |
+| 5         | Invalid Auction ID                                                                     |
+| 6         | Invalid (i.e., malformed) Advertiser Domain                                            |
+| 7         | Missing Markup                                                                         |
+| 8         | Missing Creative ID                                                                    |
+| 9         | Missing Bid Price                                                                      |
+| 10        | Missing Minimum Creative Approval Data                                                 |
+| 100       | Bid was Below Auction Floor                                                            |
+| 101       | Bid was Below Deal Floor                                                               |
+| 102       | Lost to Higher Bid                                                                     |
+| 103       | Lost to a Bid for a PMP Deal                                                           |
+| 104       | Buyer Seat Blocked                                                                     |
+| 200       | Creative Filtered - General; reason unknown.                                           |
+| 201       | Creative Filtered - Pending processing by Exchange (e.g., approval, transcoding, etc.) |
+| 202       | Creative Filtered - Disapproved by Exchange                                            |
+| 203       | Creative Filtered - Size Not Allowed                                                   |
+| 204       | Creative Filtered - Incorrect Creative Format                                          |
+| 205       | Creative Filtered - Advertiser Exclusions                                              |
+| 206       | Creative Filtered – App Bundle Exclusions                                              |
+| 207       | Creative Filtered - Not Secure                                                         |
+| 208       | Creative Filtered - Language Exclusions                                                |
+| 209       | Creative Filtered - Category Exclusions                                                |
+| 210       | Creative Filtered - Creative Attribute Exclusions                                      |
+| 211       | Creative Filtered - Ad Type Exclusions                                                 |
+| 212       | Creative Filtered - Animation Too Long                                                 |
+| 213       | Creative Filtered - Not Allowed in PMP Deal                                            |
+| >= 1000   | Exchange specific (should be communicated to bidders a priori)                         |
+
+ 
+
+## 5.26 Data Asset Types Enumerated Value
+
+| **Value**  | **Description**                                                                                                                                                       |
+|:-----------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| sponsored  | Sponsored By message where response should contain the brand name of the sponsor.                                                                                     |
+| desc       | Descriptive text associated with the product or service being advertised. Longer length of text in response may be truncated or ellipsed by the exchange.             |
+| rating     | Rating of the product being offered to the user. For example an app’s rating in an app store from 0-5.                                                                |
+| likes      | Number of social ratings or “likes” of the product being offered to the user.                                                                                         |
+| downloads  | Number downloads/installs of this product                                                                                                                             |
+| price      | Price for product / app / in-app purchase. Value should include currency symbol in localised format.                                                                  |
+| saleprice  | Sale price that can be used together with price to indicate a discounted price compared to a regular price. Value should include currency symbol in localised format. |
+| phone      | Phone number                                                                                                                                                          |
+| address    | Address                                                                                                                                                               |
+| desc2      | Additional descriptive text associated with the product or service being advertised                                                                                   |
+| displayurl | Display URL for the text ad. To be used when sponsoring entity doesn’t own the content. IE sponsored by BRAND on SITE (where SITE is transmitted in this field).      |
+| ctatext    | CTA description - descriptive text describing a ‘call to action’ button for the destination URL.                                                                      |
+
+ 
+
+
